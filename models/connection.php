@@ -1,5 +1,5 @@
 <?php
-class Todo
+class Connection
 {
 	var $dbName = 'ToDo';
 	var $dbHost = 'localhost';
@@ -15,27 +15,15 @@ class Todo
         {
         	die('Could not connect: ' . mysql_error());
         }
+        
+        mysql_select_db($this->dbName);
 	}
 	
-    
     function disconnect()
     {	
     	mysql_close($this->conn);
     	$this->conn = null;
     }
     
-    function get_query($user_id)
-    {
-    	mysql_select_db($this->dbName);
-    	$sql = 'SELECT task FROM Todo WHERE user_id = ' . $user_id;
-    	$retval = mysql_query( $sql, $this->conn );
-    	
-    	if(! $retval ) {
-    		die('Could not get data: ' . mysql_error());
-    	}
-    	while($row = mysql_fetch_array($retval, MYSQL_NUM)) {
-    		echo "{$row[0]}  <br> ";
-        }
-    }
 }
 ?>
