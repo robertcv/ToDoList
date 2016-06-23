@@ -1,6 +1,6 @@
 <?php
 
-include_once 'connection.php';
+include 'connection.php';
 
 class TodoModel
 {	
@@ -20,13 +20,17 @@ class TodoModel
     		die('Could not get data: ' . mysql_error());
     	}
     	
-    	$array = array();
-    	while($row =mysql_fetch_assoc($retval))
+    	$display_string = "<table>";
+    	while($row = mysql_fetch_array($retval))
     	{
-    		$array[] = $row;
+    		$display_string .= "<tr>";
+    		$display_string .= "<td>" . $row[0] . "</td>";
+    		$display_string .= "</tr>";
     	}
     	
-    	return $array;
+    	$display_string .= "</table>";
+    	
+    	return $display_string;
     	
     }
     

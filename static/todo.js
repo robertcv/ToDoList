@@ -1,4 +1,19 @@
-function ajaxFunction(){
+function jsonServerResponse() {
+    $.ajax({
+    type: "GET",
+    url: "controllers/todo.php",
+    data: "action=getUser&user_name=robert&user_pass=geslo",
+    dataType: 'json',
+    success: function (json) {
+      	console.log(json.user_id);
+    }
+    });
+}
+
+
+
+
+function ajax(){
 	var ajaxRequest;
 	var ajaxResponse;
 	
@@ -19,13 +34,16 @@ function ajaxFunction(){
 	
 	ajaxRequest.onreadystatechange = function(){
 		if(ajaxRequest.readyState == 4){
-			ajaxResponse = ajaxRequest.responseText;
+			ajaxResponse = JSON.parse(ajaxRequest.responseText);
 		}
 	}
 	
-	ajaxRequest.open("GET",'controllers/todo.php', true);
+    //var queryString = "?action=getUser" + "&user_name=" + user_id;
+	
+	ajaxRequest.open("GET",'controllers/todo.php?action=getUser&user_name=obert&user_pass=geslo', true);
     ajaxRequest.send();
     
-    document.getElementById('result').innerHTML = ajaxResponse;
+    
+    console.log( ajaxResponse.user_id );
 	
 }
