@@ -26,5 +26,31 @@ class UserModel
     	
     }
     
+    function newUser($user_name, $user_pass)
+    {
+    	$sql = 'SELECT COUNT(*) FROM Users WHERE username=\''.$user_name.'\'';
+    	
+    	$retval = mysql_query( $sql, $this->conn->conn );
+    	
+    	if(! $retval ) {
+    		die('Could not get data: ' . mysql_error());
+    	}
+    	
+    	$id = mysql_fetch_assoc($retval);
+    	
+    	if($id['COUNT(*)'] != 0)
+    		return null;
+    	
+    	$sql = 'INSERT INTO Users( username, PASSWORD) VALUES (\''.$user_name.'\',\''.$user_pass.'\');';
+    	$retval = mysql_query( $sql, $this->conn->conn );
+    	
+    	if(! $retval ) {
+    		die('Could not get data: ' . mysql_error());
+    	}
+    	
+    	return $this->getUserId($user_name, $user_pass);
+    	
+    }
+    
 }
 ?>
