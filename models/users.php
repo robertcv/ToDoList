@@ -11,14 +11,20 @@ class UserModel
 		$this->conn = new Connection;
 	}
     
+	function errorCheck($retval)
+	{
+		if(! $retval ) 
+		{
+    		die('Could not get data: ' . mysql_error());
+    	}
+	}
+	
     function getUserId($user_name, $user_pass)
     {
     	$sql = 'SELECT id FROM Users WHERE username=\''.$user_name.'\' AND password=\''.$user_pass.'\'';
     	$retval = mysql_query( $sql, $this->conn->conn );
     	
-    	if(! $retval ) {
-    		die('Could not get data: ' . mysql_error());
-    	}
+    	$this->errorCheck($retval);
     	
     	$row = mysql_fetch_assoc($retval);
     	
@@ -32,9 +38,7 @@ class UserModel
     	
     	$retval = mysql_query( $sql, $this->conn->conn );
     	
-    	if(! $retval ) {
-    		die('Could not get data: ' . mysql_error());
-    	}
+    	$this->errorCheck($retval);
     	
     	$id = mysql_fetch_assoc($retval);
     	
@@ -44,9 +48,7 @@ class UserModel
     	$sql = 'INSERT INTO Users( username, PASSWORD) VALUES (\''.$user_name.'\',\''.$user_pass.'\');';
     	$retval = mysql_query( $sql, $this->conn->conn );
     	
-    	if(! $retval ) {
-    		die('Could not get data: ' . mysql_error());
-    	}
+    	$this->errorCheck($retval);
     	
     	return $this->getUserId($user_name, $user_pass);
     	

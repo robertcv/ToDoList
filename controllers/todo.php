@@ -38,7 +38,7 @@ class Todo{
 	{
 		$array = $this->todoM->read($this->user_id);
 		header('Content-type: application/json');
-		echo json_encode($array);
+		echo json_encode($array, JSON_UNESCAPED_UNICODE);
 	}
 	
 	function newTask()
