@@ -1,28 +1,10 @@
-<h2>Striped Rows</h2>
-  <p></p>            
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Email</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>John</td>
-        <td>Doe</td>
-        <td>john@example.com</td>
-      </tr>
-      <tr>
-        <td>Mary</td>
-        <td>Moe</td>
-        <td>mary@example.com</td>
-      </tr>
-      <tr>
-        <td>July</td>
-        <td>Dooley</td>
-        <td>july@example.com</td>
-      </tr>
-    </tbody>
-  </table>
+<h2>Tvoj todo seznma:</h2>
+<div class="table-striped" onload="getTask();">
+	<table class="table" id="taskTable"></table>
+</div> 
+<br>
+<form class="form-inline" role="form">
+	<label for="task">Nova naloga: </label>
+    <input type="task" class="form-control" id="task">
+    <button type="button" class="btn btn-primary" onclick="newTask()">Dodaj</button>
+</form>
