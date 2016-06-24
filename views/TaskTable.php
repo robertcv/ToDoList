@@ -1,5 +1,8 @@
 <h2>Tvoj todo seznma:</h2>
 <div class="table-striped">
+	<style type="text/css">
+	.table {font-size:18px;}
+	</style>
 	<table class="table" id="taskTable"></table>
 </div> 
 <form class="form-inline" role="form">

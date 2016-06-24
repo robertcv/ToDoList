@@ -103,13 +103,19 @@ function getTask(){
     dataType: 'json',
     success: function (json) {
       	var table = document.getElementById("taskTable");
-      	table.innerHTML = "";
+      	table.value = "";
       	for(var i = 0; i < json.length; i++){	
       		var row = table.insertRow(0);
       		var cell1 = row.insertCell(0);
       		var cell2 = row.insertCell(1);
+      		var cell3 = row.insertCell(2);
+      		cell1.style.verticalAlign = "middle";
+      		cell2.style.verticalAlign = "middle";
+      		cell3.style.verticalAlign = "middle";
       		cell1.innerHTML = json[i].task;
-      		cell2.innerHTML = "<img src='img/edit-button.png' width='38' height='38'>  <img src='img/delete-button.png' width='42' height='42'>";
+      		cell2.innerHTML = "<img class='editbtn' src='img/edit-button.png' width='38' height='38'>";
+      		cell3.innerHTML = "<img class='delbtn'src='img/delete-button.png' width='42' height='42'>";
+      		
       	}
     }
     });
