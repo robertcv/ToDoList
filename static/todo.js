@@ -1,52 +1,34 @@
-function getTask(user_id){
-	$.ajax({
-    type: "GET",
-    url: "controllers/todo.php",
-    data: "action=getTask&user_id="+user_id,
-    dataType: 'json',
-    success: function (json) {
-      	var table = document.getElementById("taskTable");
-      	table.innerHTML = "";
-      	for(var i = 0; i < json.length; i++){	
-      		var row = table.insertRow(0);
-      		var cell1 = row.insertCell(0);
-      		var cell2 = row.insertCell(1);
-      		cell1.innerHTML = json[i].task;
-      		cell2.innerHTML = "<img src='img/edit-button.png' width='38' height='38'>  <img src='img/delete-button.png' width='42' height='42'>";
-      	}
-    }
-    });
-}
-
-function newTask(user_id){
-	var task = document.getElementById("task").value;
-	
-	if (task==""){
-		alert("Najprej vstavi besedilo!");
-	} else {
-		task = task.replace(/č/g, "c");
-		task = task.replace(/Č/g, "C");
-		task = task.replace(/š/g, "s");
-		task = task.replace(/Š/g, "S");
-		task = task.replace(/ž/g, "z");
-		task = task.replace(/Ž/g, "Z");
-		
-		$.ajax({
-		type: "GET",
-		url: "controllers/todo.php",
-		data: "action=newTask&user_id="+user_id+"&text="+task,
-		success: function () {
-			document.getElementById("task").value = "";
-			getTask(user_id);
-			}
-		});
-	}
-}
-
 $(document).ready(function(){
+		
+	$( "#taskTable" ).ready(function(){
+		getTask();
+	});
+	
+	$( "#newTask" ).click(function(){
+		var task = $("#task").val();
+		if (task==""){
+			alert("Najprej vstavi besedilo!");
+		} else {
+			task = task.replace(/č/g, "c");
+			task = task.replace(/Č/g, "C");
+			task = task.replace(/š/g, "s");
+			task = task.replace(/Š/g, "S");
+			task = task.replace(/ž/g, "z");
+			task = task.replace(/Ž/g, "Z");
+			
+			$.ajax({
+			type: "GET",
+			url: "controllers/todo.php",
+			data: "action=newTask&text="+task,
+			success: function () {
+				$("#task").text("");
+				getTask();
+				}
+			});
+		}
+	});
 
 	$( "#logOut" ).click(function() {
-		console.log("tukaj :)");
 		$.ajax({
 		type: "GET",
 		url: "controllers/todo.php",
@@ -112,3 +94,23 @@ $(document).ready(function(){
 	});
 
 });
+
+function getTask(){
+	$.ajax({
+    type: "GET",
+    url: "controllers/todo.php",
+    data: "action=getTask",
+    dataType: 'json',
+    success: function (json) {
+      	var table = document.getElementById("taskTable");
+      	table.innerHTML = "";
+      	for(var i = 0; i < json.length; i++){	
+      		var row = table.insertRow(0);
+      		var cell1 = row.insertCell(0);
+      		var cell2 = row.insertCell(1);
+      		cell1.innerHTML = json[i].task;
+      		cell2.innerHTML = "<img src='img/edit-button.png' width='38' height='38'>  <img src='img/delete-button.png' width='42' height='42'>";
+      	}
+    }
+    });
+}

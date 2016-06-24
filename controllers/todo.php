@@ -4,7 +4,6 @@ include_once '../models/users.php';
 
 class Todo{
 
-	var $user_id;
 	var $text;
 	var $text_new;
 	var $user_name;
@@ -16,10 +15,6 @@ class Todo{
 	{
 		$this->userM = new UserModel();
 		$this->todoM = new TodoModel();
-		
-		
-		if(isset($_GET["user_id"]))
-			$this->user_id = mysql_real_escape_string($_GET["user_id"]);
 		
 		if(isset($_GET["text"]))
 			$this->text = mysql_real_escape_string($_GET["text"]);
@@ -36,24 +31,24 @@ class Todo{
 	
 	function getTask()
 	{
-		$array = $this->todoM->read($this->user_id);
+		$array = $this->todoM->read($_SESSION['user_id']);
 		header('Content-type: application/json');
 		echo json_encode($array);
 	}
 	
 	function newTask()
 	{
-		$this->todoM->insert($this->user_id, $this->text);
+		$this->todoM->insert($_SESSION['user_id'], $this->text);
 	}
 	
 	function delateTask()
 	{
-		$this->todoM->delete($this->user_id, $this->text);
+		$this->todoM->delete($_SESSION['user_id'], $this->text);
 	}
 	
 	function updateTask()
 	{
-		$this->todoM->update($this->user_id, $this->text, $this->text_new);
+		$this->todoM->update($_SESSION['user_id'], $this->text, $this->text_new);
 	}
 	
 	function getUserId()
