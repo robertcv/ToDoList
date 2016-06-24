@@ -77,7 +77,10 @@ class Todo{
 		$id = $this->userM->newUser($this->user_name, $this->user_pass);
 		
 		if(is_numeric($id))
+		{
 			$array = array('user_id' => $id);
+			$_SESSION['user_id'] = $id;
+		}
 		else
 			$array = array('user_id' => 'null');
 			
@@ -87,7 +90,6 @@ class Todo{
 	
 	function logOut()
 	{	
-		echo 'tukaj sem';
 		session_destroy();
 	}
 	

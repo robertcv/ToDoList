@@ -1,4 +1,4 @@
-function checkUser(){
+function User(action){
 	
 	var usr = document.getElementById("usr").value;
 	var pwd = document.getElementById("pwd").value;
@@ -6,45 +6,25 @@ function checkUser(){
 	$.ajax({
     type: "GET",
     url: "controllers/todo.php",
-    data: "action=getUserId&user_name="+usr+"&user_pass="+pwd,
+    data: "action="+action+"&user_name="+usr+"&user_pass="+pwd,
     dataType: 'json',
     success: function (json) {
       	if(json.user_id == "null"){
-      		alert("Napačno uporabniško ime ali geslo!");
       		document.getElementById("usr").value="";
       		document.getElementById("pwd").value="";
+      		
+      		if(action=="getUserId")
+      			alert("Napačno uporabniško ime ali geslo!");
+      		else
+      			alert("Uporabniško ime je zasedeno!");
       	} else {
-      		user_id = json.user_id;
       		location.reload(); 
       	}
     }
     });
 }
 
-function newUser(){
-	var usr = document.getElementById("usr").value;
-	var pwd = document.getElementById("pwd").value;
-	
-	$.ajax({
-    type: "GET",
-    url: "controllers/todo.php",
-    data: "action=newUser&user_name="+usr+"&user_pass="+pwd,
-    dataType: 'json',
-    success: function (json) {
-      	if(json.user_id == "null"){
-      		alert("Uporabniško ime je zasedeno!");
-      		document.getElementById("usr").value="";
-      		document.getElementById("pwd").value="";
-      	} else {
-      		user_id = json.user_id;
-      		console.log(user_id);
-      	}
-    }
-    });
-}
-
 function getTask(user_id){
-	console.log(user_id);
 	$.ajax({
     type: "GET",
     url: "controllers/todo.php",
@@ -52,6 +32,7 @@ function getTask(user_id){
     dataType: 'json',
     success: function (json) {
       	var table = document.getElementById("taskTable");
+      	table.innerHTML = "";
       	for(var i = 0; i < json.length; i++){	
       		var row = table.insertRow(0);
       		var cell1 = row.insertCell(0);
@@ -62,12 +43,16 @@ function getTask(user_id){
     });
 }
 
-function newTask(){
+function newTask(user_id){
 	var task = document.getElementById("task").value;
 	$.ajax({
     type: "GET",
     url: "controllers/todo.php",
-    data: "action=newTask&user_id="+user_id+"&text="+task
+    data: "action=newTask&user_id="+user_id+"&text="+task,
+    success: function () {
+      	document.getElementById("task").value = "";
+      	getTask(user_id);
+      	}
     });
 }
 
