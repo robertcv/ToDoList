@@ -38,7 +38,7 @@ class Todo{
 	{
 		$array = $this->todoM->read($this->user_id);
 		header('Content-type: application/json');
-		echo json_encode($array, JSON_UNESCAPED_UNICODE);
+		echo json_encode($array);
 	}
 	
 	function newTask()
@@ -61,7 +61,10 @@ class Todo{
 		$id = $this->userM->getUserId($this->user_name, $this->user_pass);
 		
 		if(is_numeric($id))
+		{
 			$array = array('user_id' => $id);
+			$_SESSION['user_id'] = $id;
+		}
 		else
 			$array = array('user_id' => 'null');
 			
@@ -82,8 +85,14 @@ class Todo{
 		echo json_encode($array);
 	}
 	
+	function logOut()
+	{	
+		echo 'tukaj sem';
+		session_destroy();
+	}
+	
 }
-
+session_start();
 $action = $_GET["action"];
 $todo = new Todo();
 
@@ -105,6 +114,9 @@ case "getUserId":
 	break;
 case "newUser":
 	$todo->newUser();
+	break;
+case "logOut":
+	$todo->logOut();
 	break;
 }
 

@@ -10,7 +10,15 @@
 <body>
     <div class="container" >
     	<?php
-    	include 'views/TaskTable.php';
+    	session_start();
+    	if(isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id']))
+    	{
+    		include 'views/TaskTable.php';
+    	}
+    	else
+    	{
+    		include 'views/UserForm.php';
+    	}
     	?>  
     </div>
   </body>

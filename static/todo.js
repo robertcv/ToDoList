@@ -1,6 +1,5 @@
-var user_id = 1;
-
 function checkUser(){
+	
 	var usr = document.getElementById("usr").value;
 	var pwd = document.getElementById("pwd").value;
 	
@@ -16,7 +15,7 @@ function checkUser(){
       		document.getElementById("pwd").value="";
       	} else {
       		user_id = json.user_id;
-      		console.log(user_id);
+      		location.reload(); 
       	}
     }
     });
@@ -44,8 +43,8 @@ function newUser(){
     });
 }
 
-function getTask(){
-	console.log("tukaj sem");
+function getTask(user_id){
+	console.log(user_id);
 	$.ajax({
     type: "GET",
     url: "controllers/todo.php",
@@ -69,6 +68,17 @@ function newTask(){
     type: "GET",
     url: "controllers/todo.php",
     data: "action=newTask&user_id="+user_id+"&text="+task
+    });
+}
+
+function logOut(){
+	$.ajax({
+    type: "GET",
+    url: "controllers/todo.php",
+    data: "action=logOut",
+    success: function (){
+    	location.reload(); 
+    }
     });
 }
 

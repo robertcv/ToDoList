@@ -9,6 +9,6 @@
 		<label for="pwd">Geslo:</label>
 		<input type="password" class="form-control" id="pwd" placeholder="Vnesi geslo">
 	</div>
-	<button type="button" class="btn btn-primary" onclick="checkUser()" >Sign in</button>
+	<button type="button" class="btn btn-primary" onclick="checkUser()">Sign in</button>
 	<button type="button" class="btn btn-default" onclick="newUser()">Register</button>
 </form>
