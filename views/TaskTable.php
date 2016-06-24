@@ -8,4 +8,5 @@
     <input type="task" class="form-control" id="task">
     <button type="button" class="btn btn-primary" onclick="newTask(<?php echo $_SESSION['user_id']; ?>)">Dodaj</button>
 </form>
-<button type="button" class="btn btn-primary" onclick="logOut();">Odjava</button>
+<br>
+<button type="button" class="btn btn-primary" id="logOut" >Odjava</button>
