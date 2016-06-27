@@ -5,7 +5,7 @@ include_once '../models/users.php';
 class Todo{
 
 	var $text;
-	var $text_new;
+	var $task_id;
 	var $user_name;
 	var $user_pass;
 	var $userM;
@@ -16,17 +16,17 @@ class Todo{
 		$this->userM = new UserModel();
 		$this->todoM = new TodoModel();
 		
-		if(isset($_GET["text"]))
-			$this->text = mysql_real_escape_string($_GET["text"]);
+		if(isset($_POST["text"]))
+			$this->text = mysql_real_escape_string($_POST["text"]);
 		
-		if(isset($_GET["text_new"]))
-			$this->text_new = mysql_real_escape_string($_GET["text_new"]);
+		if(isset($_POST["task_id"]))
+			$this->task_id = mysql_real_escape_string($_POST["task_id"]);
 		
-		if(isset($_GET["user_name"]))
-			$this->user_name = mysql_real_escape_string($_GET["user_name"]);
+		if(isset($_POST["user_name"]))
+			$this->user_name = mysql_real_escape_string($_POST["user_name"]);
 		
-		if(isset($_GET["user_pass"]))
-			$this->user_pass = mysql_real_escape_string($_GET["user_pass"]);
+		if(isset($_POST["user_pass"]))
+			$this->user_pass = mysql_real_escape_string($_POST["user_pass"]);
 	}
 	
 	function getTask()
@@ -43,12 +43,12 @@ class Todo{
 	
 	function delateTask()
 	{
-		$this->todoM->delete($_SESSION['user_id'], $this->text);
+		$this->todoM->delete($this->task_id);
 	}
 	
 	function updateTask()
 	{
-		$this->todoM->update($_SESSION['user_id'], $this->text, $this->text_new);
+		$this->todoM->update($this->text, $this->task_id);
 	}
 	
 	function getUserId()
@@ -89,8 +89,14 @@ class Todo{
 	}
 	
 }
+
 session_start();
-$action = $_GET["action"];
+//finding what action to execute
+if(isset($_GET["action"]))
+	$action = $_GET["action"];
+else
+	$action = $_POST["action"];
+
 $todo = new Todo();
 
 switch ($action) {
