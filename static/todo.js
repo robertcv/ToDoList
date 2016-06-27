@@ -9,20 +9,45 @@ $(document).ready(function(){
 		success: function (json) {
 			for(var i = 0; i < json.length; i++){
 				var result = "<td class='task' valign='middle'>" + json[i].task + "</td>";
-				result += "<td valign='middle'><img class='editbt' src='img/edit-button.png' width='38' height='38'></td>";
-				result += "<td valign='middle'><img class='btnDelete' src='img/delete-button.png' width='42' height='42'></td>";
+				result += "<td valign='middle'><img class='editBt' src='img/edit-button.png' width='38' height='38'></td>";
+				result += "<td valign='middle'><img class='deleteBt' src='img/delete-button.png' width='42' height='42'></td>";
 				$('#taskTable').append( '<tr>' + result + '</tr>' );
 			}
 		}
 		});
 	});
 	
-	$( "#taskTable" ).on('click', ".btnDelete", function(){
+	$( "#taskTable" ).on('click', ".deleteBt", function(){
 		var task = $(this).closest("tr").children(".task").text();
 		$.ajax({
 		type: "GET",
 		url: "controllers/todo.php",
 		data: "action=delateTask&text=" + task,
+		success: function () {
+			location.reload();
+		}
+		});
+	});
+	
+	var task_old;
+	
+	$( "#taskTable" ).on('click', ".editBt", function(){
+		$(this).attr("src","img/save-button.png");
+		$(this).attr("class","saveBt");
+		
+		var tr = $(this).closest("tr")
+		task_old = tr.children(".task").text();
+		tr.children(".task").html('<input type="text" id="new_task" value="'+task_old+'">');
+
+	});
+	
+	$( "#taskTable" ).on('click', ".saveBt", function(){
+		var task_new = $(this).closest("tr").children(".task").children("#new_task").val();
+		console.log(task_new);
+		$.ajax({
+		type: "GET",
+		url: "controllers/todo.php",
+		data: "action=updateTask&text=" + task_old + "&text_new=" + task_new,
 		success: function () {
 			location.reload();
 		}

@@ -53,8 +53,11 @@ class TodoModel
     
     function update($user_id, $text_old, $text_new)
     {
-    	$this->delete($user_id, $text_old);
-    	$this->insert($user_id, $text_new);	
+    	$sql = 'UPDATE Todo SET task=\''.$text_new.'\' WHERE task=\''.$text_old.'\';';
+    	echo $sql;
+    	$retval = mysql_query( $sql, $this->conn->conn );
+    	
+    	$this->errorCheck($retval);
     }
     
 }
