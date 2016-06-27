@@ -47,7 +47,7 @@ class UserModel
     	
     	$id = mysql_fetch_assoc($retval);
     	
-    	if($id['COUNT(*)'] != 0)
+    	if($id['COUNT(*)'] !=0)
     		return null;
     	
     	$sql = 'INSERT INTO Users( username, password) VALUES (\''.$user_name.'\',\''.$user_pass_hash.'\');';

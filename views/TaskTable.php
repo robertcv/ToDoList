@@ -7,7 +7,7 @@
 </div> 
 <form class="form-inline" role="form">
 	<h2>Dodaj nalogo:</h2>
-    <input type="task" class="form-control" id="newTaskInput">
+    <input type="text" class="form-control" id="newTaskInput">
     <button type="button" class="btn btn-primary" id="newTask">Dodaj</button>
 </form>
 <br>

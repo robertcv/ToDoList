@@ -1,8 +1,5 @@
-$(document).ready(function(){
-		
-	$( "#taskTable" ).each(function(){
-		//get tasks from database and generating html table
-		$.ajax({
+var init = function(){
+	$.ajax({
 		type: "GET",
 		url: "controllers/todo.php",
 		data: "action=getTask",
@@ -12,11 +9,14 @@ $(document).ready(function(){
 				var result = "<td width='80%' id='task' valign='middle'>" + json[i].task + "<input type='hidden' name='task_id' value=" + json[i].id + "></td>";
 				result += "<td width='10%' valign='middle' align='center'><img class='editBt' src='img/edit-button.png' width='38' height='38'></td>";
 				result += "<td width='10%' valign='middle' align='center'><img class='deleteBt' src='img/delete-button.png' width='42' height='42'></td>";
-				$('#taskTable').append( '<tr id="tr' + i + '">' + result + '</tr>' );
+				$('#taskTable').append( '<tr>' + result + '</tr>' );
 			}
 		}
-		});
-	});
+	})
+}
+
+$(document).ready(function(){
+	init()
 	
 	$( "#taskTable" ).on('click', ".deleteBt", function(){
 		if (confirm('Si prepričan, da želiš izbrisat nalogo?')) {
@@ -32,33 +32,31 @@ $(document).ready(function(){
 		}
 	});
 	
-	var old_task_id = new Array();
-	
 	$( "#taskTable" ).on('click', ".editBt", function(){
 		var tr = $(this).closest("tr");
 		
 		$(this).attr("src","img/save-button.png");
 		$(this).attr("class","saveBt");
 		
-		var rowId = tr.attr("id").slice(2);
-		old_task_id[rowId] = tr.children("#task").find( 'input:hidden' ).val();
-		task_old = tr.children("#task").text();
-		tr.children("#task").html('<input type="text" id="new_task" value="'+task_old+'"><input type="hidden" name="task_id" value=' + old_task_id[rowId] + '>');
+		var task_id = tr.children("#task").find( 'input:hidden' ).val();
+		var task_old = tr.children("#task").text();
+		tr.children("#task").html('<input type="text" id="new_task" value="'+task_old+'"><input type="hidden" name="task_id" value=' + task_id + '>');
 			
 	});
 	
 	$( "#taskTable" ).on('click', ".saveBt", function(){
 		var tr = $(this).closest("tr");
-		var rowId = tr.attr("id").slice(2);
 		var task_new = tr.children("#task").children("#new_task").val();
+		var task_id = tr.children("#task").find( 'input:hidden' ).val();
+		var that = this;
 		$.ajax({
 		type: "POST",
 		url: "controllers/todo.php",
-		data: "action=updateTask&text=" + task_new + "&task_id=" + old_task_id[rowId],
+		data: "action=updateTask&text=" + task_new + "&task_id=" + task_id,
 		success: function () {
-			tr.children("#task").html(task_new + "<input type='hidden' name='task_id' value=" + old_task_id[rowId] + "></td>");
-			$(this).attr("src","img/edit-button.png");
-			$(this).attr("class","editBt");
+			tr.children("#task").html(task_new + "<input type='hidden' name='task_id' value=" + task_id + "></td>");
+			$(that).attr("src","img/edit-button.png");
+			$(that).attr("class","editBt");
 		}
 		});
 	});
@@ -68,13 +66,6 @@ $(document).ready(function(){
 		if (task==""){
 			alert("Najprej vstavi besedilo!");
 		} else {
-			task = task.replace(/č/g, "c");
-			task = task.replace(/Č/g, "C");
-			task = task.replace(/š/g, "s");
-			task = task.replace(/Š/g, "S");
-			task = task.replace(/ž/g, "z");
-			task = task.replace(/Ž/g, "Z");
-			
 			$.ajax({
 			type: "POST",
 			url: "controllers/todo.php",
